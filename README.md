@@ -1,4 +1,4 @@
-#Weather station project for Raspberry Pi
+# Weather station project for Raspberry Pi
 
 Code for weather station setup using DHT-22 sensor and Raspberry Pi. Consists of data gathering script and a webapp for displaying the results
 
