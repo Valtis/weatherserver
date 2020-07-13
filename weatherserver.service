@@ -1,0 +1,13 @@
+[Unit]
+Description=Weatherserver
+After=network.target
+
+[Service]
+ExecStart=EXEC_LOCATION_PLACEHOLDR
+Type=simple
+Restart=on-failure
+RestartSec=5
+WorkingDirectory=WORKING_DIR_PLACEHOLDER
+
+[Install]
+WantedBy=multi-user.target

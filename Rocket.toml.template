@@ -1,0 +1,9 @@
+[global.databases]
+postgresql_db = { url = "postgres://DATABASE_USERNAME_PLACEHOLDER:DATABASE_PASSWORD_PLACEHOLDER@DATABASE_URL_PLACEHOLDER/DATABASE_NAME_PLACEHOLDER" }
+
+[production]
+address = "0.0.0.0"
+port = 8000
+keep_alive = 5
+log = "normal"
+secret_key = PLACEHOLDER_VALUE_FOR_SECRET_KEY 

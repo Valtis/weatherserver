@@ -1,0 +1,5 @@
+/target
+
+.idea/*
+Rocket.toml
+.env
