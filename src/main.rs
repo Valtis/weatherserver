@@ -8,23 +8,16 @@ extern crate chrono;
 mod schema;
 mod models;
 
-
-
-use chrono::{NaiveDateTime, Duration};
-
-
-
 use diesel::prelude::*;
 use models::*;
 
-use rocket::response::{Redirect, content };
+use chrono::{NaiveDateTime, Duration};
 
+use rocket::response::{Redirect, content };
 use rocket_contrib::serve::StaticFiles;
-use chrono::NaiveDate;
 
 #[database("postgresql_db")]
 struct PgDbConn(diesel::PgConnection);
-
 
 #[get("/")]
 fn index() -> Redirect {
@@ -35,14 +28,10 @@ fn index() -> Redirect {
 fn get_temperature(conn: PgDbConn, start: String, end: String, offset: i64) -> content::Json<String> {
     use self::schema::temperature::dsl::*;
 
+    let (start, end) = calc_start_end(start, end, offset);
 
-
-    let start = NaiveDateTime::parse_from_str(&format!("{} 00:00:00", start), "%Y-%m-%d %H:%M:%S").unwrap();
-    let end = NaiveDateTime::parse_from_str(&format!("{} 00:00:00", end), "%Y-%m-%d %H:%M:%S").unwrap();
-
-    let start = start.checked_add_signed(Duration::minutes(offset)).unwrap();
-    let end = end.checked_add_signed(Duration::minutes(offset)).unwrap();
-
+    // trying to extract this to generic function shared by get_humidity turned out to be pretty complex,
+    // so duplicating for now
     let results =
         temperature
             .filter(logged_at.gt(start))
@@ -56,14 +45,10 @@ fn get_temperature(conn: PgDbConn, start: String, end: String, offset: i64) -> c
 fn get_humidity(conn: PgDbConn, start: String, end: String, offset: i64) -> content::Json<String> {
     use self::schema::humidity::dsl::*;
 
+    let (start, end) = calc_start_end(start, end, offset);
 
-    let start = NaiveDateTime::parse_from_str(&format!("{} 00:00:00", start), "%Y-%m-%d %H:%M:%S").unwrap();
-    let end = NaiveDateTime::parse_from_str(&format!("{} 00:00:00", end), "%Y-%m-%d %H:%M:%S").unwrap();
-
-
-    let start = start.checked_add_signed(Duration::minutes(offset)).unwrap();
-    let end = end.checked_add_signed(Duration::minutes(offset)).unwrap();
-
+    // as above, generic trait bounds turned out to be headache inducing mess of multiple nested
+    // layers of internal diesel trait definitions. Duplicating the query instead
     let results =
         humidity
             .filter(logged_at.gt(start))
@@ -71,6 +56,16 @@ fn get_humidity(conn: PgDbConn, start: String, end: String, offset: i64) -> cont
             .load::<Humidity>(&conn.0).unwrap();
 
     content::Json(serde_json::to_string(&results).unwrap())
+}
+
+fn calc_start_end(start: String, end: String, offset: i64) -> (NaiveDateTime, NaiveDateTime) {
+    let start = NaiveDateTime::parse_from_str(&format!("{} 00:00:00", start), "%Y-%m-%d %H:%M:%S").unwrap();
+    let end = NaiveDateTime::parse_from_str(&format!("{} 00:00:00", end), "%Y-%m-%d %H:%M:%S").unwrap();
+
+    let start = start.checked_add_signed(Duration::minutes(offset)).unwrap();
+    let end = end.checked_add_signed(Duration::minutes(offset)).unwrap();
+
+    (start, end)
 }
 
 fn main() {
