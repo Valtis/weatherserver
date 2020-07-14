@@ -53,6 +53,8 @@ async function drawGraph(graphType, title) {
     let time = graphData.map(item => new Date(item["logged_at"]));
     let measuredValues = graphData.map(item => item["measured_" + graphType]);
 
+    document.getElementById("last-" + graphType).innerHTML = parseFloat(measuredValues[measuredValues.length-1]).toFixed(1);
+
     var dataMap = {
         x: time,
         y: measuredValues,

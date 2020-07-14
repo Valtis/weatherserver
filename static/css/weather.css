@@ -19,6 +19,18 @@
     margin: auto;
 }
 
+ .last-value-container {
+    margin: auto;
+    display: flex;
+ }
+
+.last-value {
+    font-family: arial;
+    font-size: larger;
+    padding-left: 4px;
+    padding-top: 5px;
+}
+
 
 body {
     background-color: #f6f6f6;
@@ -26,6 +38,6 @@ body {
 
 label {
     padding: 5px;
-    font-size: large;
-
+    font-family: arial;
+    font-size: larger;
 }
