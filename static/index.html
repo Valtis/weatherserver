@@ -1,160 +1,37 @@
 <html>
 	<head>
-		<title>Weather</title>
+		<title>Säätiedot</title>
 		<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-
-
-		<script type="text/javascript">
-
-			function drawGraphs() {
-				drawTemperatureGraph();
-				drawHumidityGraph();
-			}
-
-			async function fetch_data(url, start, end) {
-
-				let queryparam = "?start=" + start + "&end=" + end + "&offset=" + (new Date()).getTimezoneOffset();
-				let response = await fetch(url + queryparam);
-				let json = await response.json();
-				return json;
-			}
-
-			async function drawTemperatureGraph() {
-
-				start = document.getElementsByName("temperature-start")[0].value;
-				end = document.getElementsByName("temperature-end")[0].value;
-
-
-				if (start === "") {
-					let date = new Date();
-					date.setDate(date.getDate() - 30);
-
-					month = date.getMonth() + 1;
-					day = date.getDate();
-
-					start = "" + date.getFullYear() + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
-					document.getElementsByName("temperature-start")[0].value = start;
-				}
-
-				if (end === "") {
-					let date = new Date();
-
-					month = date.getMonth() + 1;
-					day = date.getDate() + 1;
-
-					end = date.getFullYear() + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
-					document.getElementsByName("temperature-end")[0].value = end;
-				}
-
-
-				let temperature_data = await fetch_data("temperature", start, end);
-				let time = temperature_data.map(item => new Date(item["logged_at"]));
-				let measured_temperature = temperature_data.map(item => item["measured_temperature"]);
-
-
-				var temperature = {
-					x: time,
-					y: measured_temperature,
-				  type: 'scatter'
-				};
-
-
-				var data = [temperature];
-
-				layout = {
-					title: "Lämpötila",
-					fot: { size: 18 },
-					xaxis: { fixedrange: true },
-					yaxis: { fixedrange: true },
-				};
-
-				config = {
-					responsive: true,
-					editable: false,
-					displayModeBar: false,
-				};
-
-				Plotly.newPlot('temperature', data, layout, config);
-
-			}
-
-			async function drawHumidityGraph() {
-
-				start = document.getElementsByName("humidity-start")[0].value;
-				end = document.getElementsByName("humidity-end")[0].value;
-
-
-				if (start === "") {
-					let date = new Date();
-					date.setDate(date.getDate() - 30);
-
-					month = date.getMonth() + 1;
-					day = date.getDate();
-
-					start = "" + date.getFullYear() + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
-					document.getElementsByName("humidity-start")[0].value = start;
-				}
-
-				if (end === "") {
-					let date = new Date();
-
-					month = date.getMonth() + 1;
-					day = date.getDate() + 1;
-
-					end = date.getFullYear() + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
-					document.getElementsByName("humidity-end")[0].value = end;
-				}
-
-				let humidity_data = await fetch_data("humidity", start, end);
-
-				let time = humidity_data.map(item => new Date(item["logged_at"]));
-				let measured_humidity = humidity_data.map(item => item["measured_humidity"]);
-
-
-				var humidity = {
-					x: time,
-					y: measured_humidity,
-				  type: 'scatter'
-				};
-
-
-				var data = [humidity];
-
-				layout = {
-					title: "Ilmankosteus",
-					fot: { size: 18 },
-					xaxis: { fixedrange: true },
-					yaxis: { fixedrange: true },
-				};
-
-				config = {
-					responsive: true,
-					editable: false,
-					displayModeBar: false,
-				};
-
-				Plotly.newPlot('humidity', data, layout, config);
-			}
-
-
-
-		</script>
+		<script src="/js/weather.js"></script>
+		<link href="/css/weather.css" rel="stylesheet" type="text/css">
 	</head>
 	<body onload="drawGraphs()">
-		<div style="display: flex; flex-direction: column;">
-			<div id="temperature-container">
+		<div class="graphs-container">
+			<div id="temperature-container" class="graph-container">
 				<div id="temperature"></div>
-				<div style="display: flex; flex-direction: row;">
-					<input style="margin: 15px;" type="date" name="temperature-start" placeholder="Aloituspäivämäärä" onchange="drawTemperatureGraph()">
-					<input style="margin: 15px;" type="date" name="temperature-end" placeholder="Lopetuspäivämäärä" onchange="drawTemperatureGraph()">
+				<div class="date-container">
+					<div class="input-container">
+						<label for="temperature-start">Alkaen (klo 00:00)</label>
+						<input type="date" id="temperature-start" placeholder="Aloituspäivämäärä" onchange="drawTemperatureGraph()">
+					</div>
+					<div class="input-container">
+						<label for="temperature-end">Päättyen (klo 00:00)</label>
+						<input type="date" id="temperature-end" placeholder="Lopetuspäivämäärä" onchange="drawTemperatureGraph()">
+					</div>
 				</div>
 			</div>
 
-			<div id="humidity-container">
+			<div id="humidity-container" class="graph-container">
 				<div id="humidity"></div>
-				<div style="display: flex; flex-direction: row;">
-					<input style="margin: 15px;" type="date" name="humidity-start" placeholder="Aloituspäivämäärä" onchange="drawHumidityGraph()">
-					<input style="margin: 15px;" type="date" name="humidity-end" placeholder="Lopetuspäivämäärä" onchange="drawHumidityGraph()">
+				<div class="date-container">
+					<div class="input-container">
+						<label for="humidity-start">Alkaen (klo 00:00)</label>
+						<input type="date" id="humidity-start" placeholder="Aloituspäivämäärä" onchange="drawHumidityGraph()">
+					</div>
+					<div class="input-container">
+						<label for="humidity-end">Päättyen (klo 00:00)</label>
+						<input type="date" id="humidity-end" placeholder="Lopetuspäivämäärä" onchange="drawHumidityGraph()">
+					</div>
 				</div>
 			</div>
 		</div>

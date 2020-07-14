@@ -1,0 +1,31 @@
+.graphs-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: auto;
+}
+
+.graph-container {
+    padding: 20px
+}
+
+.date-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.input-container {
+    margin: auto;
+}
+
+
+body {
+    background-color: #f6f6f6;
+}
+
+label {
+    padding: 5px;
+    font-size: large;
+
+}
