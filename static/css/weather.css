@@ -19,10 +19,31 @@
     margin: auto;
 }
 
- .last-value-container {
+
+.overview-header-container {
     margin: auto;
     display: flex;
- }
+    flex-wrap: wrap;
+}
+
+.overview-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;    
+    justify-content: space-around;
+}
+
+.overview-column {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 45px;
+}
+
+
+.overview-item {
+    padding: 10px;
+    display: list-item;
+}
 
 .last-value {
     font-family: arial;
@@ -30,7 +51,6 @@
     padding-left: 4px;
     padding-top: 5px;
 }
-
 
 body {
     background-color: #f6f6f6;

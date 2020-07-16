@@ -6,12 +6,63 @@
 		<link href="/css/weather.css" rel="stylesheet" type="text/css">
 	</head>
 	<body onload="drawGraphs()">
-		<div class="graphs-container">
-			<div id="temperature-container" class="graph-container">
-				<div class="last-value-container">
-					<label for="last-temperature">Viimeisin mitattu lämpötila:</label>
-					<div id="last-temperature" class="last-value"></div><div class="last-value">C</div>
+		<div>
+			<div class="overview-container">
+				<div class="overview-header-container">
+					<label for="last-measurement-time">Viimeksi päivitetty</label>
+					<div id="last-measurement-time" class="last-value"></div>
 				</div>
+			</div>
+			<div class="overview-container">
+				<div class="overview-column">
+					<div class="overview-item">
+						<label for="last-temperature">Viimeisin mitattu lämpötila:</label>
+						<div id="last-temperature" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="highest-temperature">Korkein lämpötila (kuluva vuorokausi):</label>
+						<div id="highest-temperature" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="lowest-temperature">Matalin lämpötila (kuluva vuorokausi):</label>
+						<div id="lowest-temperature" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="highest-temperature-all-time">Korkein lämpötila (mittausjakso):</label>
+						<div id="highest-temperature-all-time" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="lowest-temperature-all-time">Matalin lämpötila (mittausjakso):</label>
+						<div id="lowest-temperature-all-time" class="last-value"></div>
+					</div>
+				</div>
+
+				<div class="overview-column">
+					<div class="overview-item">
+						<label for="last-humidity">Viimeisin mitattu ilmankosteus:</label>
+						<div id="last-humidity" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="highest-humidity">Korkein ilmankosteus (kuluva vuorokausi):</label>
+						<div id="highest-humidity" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="lowest-humidity">Matalin ilmankosteus (kuluva vuorokausi):</label>
+						<div id="lowest-humidity" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="highest-humidity-all-time">Korkein ilmankosteus (mittausjakso):</label>
+						<div id="highest-humidity-all-time" class="last-value"></div>
+					</div>
+					<div class="overview-item">
+						<label for="lowest-humidity-all-time">Matalin ilmankosteus (mittausjakso):</label>
+					<div id="lowest-humidity-all-time" class="last-value"></div>
+				</div>
+			</div>
+		</div>
+		<div class="graphs-container">
+
+			<div id="temperature-container" class="graph-container">
 				<div id="temperature"></div>
 				<div class="date-container">
 					<div class="input-container">
@@ -26,10 +77,6 @@
 			</div>
 
 			<div id="humidity-container" class="graph-container">
-				<div class="last-value-container">
-					<label for="last-humidity">Viimeisin mitattu kosteusprosentti:</label>
-					<div id="last-humidity" class="last-value"></div><div class="last-value">%</div>
-				</div>
 				<div id="humidity"></div>
 				<div class="date-container">
 					<div class="input-container">
