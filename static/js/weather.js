@@ -1,3 +1,4 @@
+"use strict";
 
 function drawGraphs() {
     drawTemperatureGraph();
@@ -38,15 +39,15 @@ async function drawHumidityGraph() {
 async function drawGraph(graphType, title, lastMeasurementUnit) {
     let datePickerStart = graphType + "-start";
     let datePickerEnd = graphType + "-end";
-    start = document.getElementById(datePickerStart).value;
-    end = document.getElementById(datePickerEnd).value;
+    let start = document.getElementById(datePickerStart).value;
+    let end  = document.getElementById(datePickerEnd).value;
 
     if (start === "") {
         let date = new Date();
         date.setDate(date.getDate() - 2); // by default show last 2 day(ish) of data.
 
-        month = date.getMonth() + 1; // 0-11 ---> 1-12
-        day = date.getDate();
+        let month = date.getMonth() + 1; // 0-11 ---> 1-12
+        let day = date.getDate();
 
         start = "" + date.getFullYear() + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
         document.getElementById(datePickerStart).value = start;
@@ -55,8 +56,8 @@ async function drawGraph(graphType, title, lastMeasurementUnit) {
     if (end === "") {
         let date = new Date();
 
-        month = date.getMonth() + 1;
-        day = date.getDate() + 1;
+        let month = date.getMonth() + 1;
+        let day = date.getDate() + 1;
 
         end = date.getFullYear() + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
         document.getElementById(datePickerEnd).value = end;
@@ -68,22 +69,22 @@ async function drawGraph(graphType, title, lastMeasurementUnit) {
 
     document.getElementById("last-" + graphType).innerHTML = parseFloat(measuredValues[measuredValues.length-1]).toFixed(1) + lastMeasurementUnit;
 
-    var dataMap = {
+    let dataMap = {
         x: time,
         y: measuredValues,
       type: 'scatter'
     };
 
-    var data = [dataMap];
+    let data = [dataMap];
 
-    layout = {
+    let layout = {
         title: title,
         fot: { size: 18 },
         xaxis: { fixedrange: true },
         yaxis: { fixedrange: true },
     };
 
-    config = {
+    let config = {
         responsive: true,
         editable: false,
         displayModeBar: false,
@@ -116,11 +117,11 @@ function updateMinMaxMeasurement(values, type, unit, startDate) {
     let minIndex = startIndex;
 
     for (let i = startIndex; i < values.times.length; ++i) {
-        if (values.values[i] > values.values[maxIndex]) {
+        if (Number(values.values[i]) > Number(values.values[maxIndex])) {
             maxIndex = i;
         }
 
-        if (values.values[i] < values.values[minIndex]) {
+        if (Number(values.values[i]) < Number(values.values[minIndex])) {
             minIndex = i;
         }
     }
@@ -133,3 +134,25 @@ function updateMinMaxMeasurement(values, type, unit, startDate) {
         parseFloat(values.values[minIndex]).toFixed(1) + unit + ", mitattu " + values.times[minIndex].toLocaleString();
 }
 
+function changeCategory(category) {
+    if (category === "temp") {
+        document.getElementById("humidity-button").classList.remove("category-active");
+        document.getElementById("humidity-button").classList.add("category-inactive");
+
+        document.getElementById("temperature-button").classList.add("category-active");
+        document.getElementById("temperature-button").classList.remove("category-inactive");
+
+
+        document.getElementById("temperature-list").style.display = ""; 
+        document.getElementById("humidity-list").style.display= "none";
+    } else if (category === "hum") {
+        document.getElementById("humidity-button").classList.remove("category-inactive");
+        document.getElementById("humidity-button").classList.add("category-active");
+
+        document.getElementById("temperature-button").classList.add("category-inactive");
+        document.getElementById("temperature-button").classList.remove("category-active");
+
+        document.getElementById("temperature-list").style.display = "none"; 
+        document.getElementById("humidity-list").style.display = "";
+    }
+}
